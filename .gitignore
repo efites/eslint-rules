@@ -1,0 +1,39 @@
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Thumbnails
+._*
+.husky/_
+
+#Environments
+**.env
+**.env.local
+**.env.development
+**.env.production
+**.env.development.local
+**.env.production.local
+
+# Local
+.DS_Store
+*.local
+*.log*
+
+# Dist
+node_modules
+dist/
+
+# IDE
+.vscode/*
+!.vscode/extensions.json
+.idea
