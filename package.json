@@ -5,6 +5,9 @@
 	"workspaces": [
 		"packages/*"
 	],
+	"scripts": {
+		"some": "some"
+	},
 	"devDependencies": {
 		"husky": "^9.1.6",
 		"prettier": "^3.3.3",

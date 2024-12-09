@@ -1,3 +1,4 @@
-import {eslint} from './index.js'
+import {eslint} from './src/index.js'
 
-export default eslint()
+
+export default eslint

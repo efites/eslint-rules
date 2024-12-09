@@ -7,7 +7,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc -b && vite build",
-		"lint": "eslint ./src/ --fix",
+		"lint": "eslint --flag unstable_ts_config --fix .",
 		"preview": "vite preview"
 	},
 	"dependencies": {
