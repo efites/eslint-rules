@@ -1,11 +1,12 @@
-import {noUnusedVars} from '../rules/no-unused-vars.js'
-import {noVarToConst} from '../rules/no-var-to-const.js'
-import {sortImports} from '../rules/sort-imports.js'
-import {linesAfterImports} from '../rules/lines-after-imports.js'
+//import {sortImports} from '../rules/sort-imports.js'
+//import {noUnusedVars} from '../rules/no-unused-vars.js'
+//import {noVarToConst} from '../rules/no-var-to-const.js'
+//import {linesAfterImports} from '../rules/lines-after-imports.js'
+//import {expressionToArrowFunction} from '../rules/expression-to-arrow-function.js'
+//import {consoleLogToInfo} from '../rules/console-log-to-info.js'
+import {structure} from '../rules/structure.js'
 
 
-
-/** @returns {import('eslint').Linter.Config} */
 export const javascript = () => {
 
 	return {
@@ -13,20 +14,43 @@ export const javascript = () => {
 		plugins: {
 			customPlugin: {
 				rules: {
-					"my-rule": noUnusedVars,
-					"vars": noVarToConst,
-					"sort-imports": sortImports,
-					"lines-after-imports": linesAfterImports,
+					//"no-unused-vars": noUnusedVars,
+					//"vars": noVarToConst,
+					//"sort-imports": sortImports,
+					//"lines-after-imports": linesAfterImports,
+					//"expression-to-arrow-function": expressionToArrowFunction, БРАК
+					//"console-log-to-info": consoleLogToInfo,
+					"structure": structure,
 				}
 			}
 		},
 		rules: {
-			"customPlugin/my-rule": "error",
-			"customPlugin/vars": "error",
-			"customPlugin/sort-imports": "warn",
-			"customPlugin/lines-after-imports": ["warn", 2],
+			//"customPlugin/no-unused-vars": "error",
+			//"customPlugin/vars": "error",
+			//"customPlugin/sort-imports": "warn",
+			//"customPlugin/lines-after-imports": ["warn", 2],
+			// "customPlugin/expression-to-arrow-function": "warn", БРАК
+			//"customPlugin/console-log-to-info": "error",
+			"customPlugin/structure": [
+				"error",
+				{
+					"folders": [
+						//"src/components",
+						//"src",
+						//"src/utils",
+						//"tests"
+					],
+					"files": [
+						//"README.md",
+						//"uuuuuuuuuu.json",
+						//"src/yyyyyyyyyy.json",
+						//"package.json",
+						//".gitignore"
+					]
+				}
+			],
 
-			"id-length": "error",
+			//"id-length": "error",
 		}
 	}
 }

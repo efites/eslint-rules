@@ -1,4 +1,4 @@
-import eslintr from '@packages/eslint'
+import eslint from '@packages/eslint'
 
 
-export default eslintr()
+export default eslint()
