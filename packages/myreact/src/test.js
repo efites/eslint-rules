@@ -1,6 +1,3 @@
-// Created folder: tests
-// Created file: uuuuuuuuuu.json
-// Created folder: src/components
 import Foo from './test2'
 
 import './App.css'
