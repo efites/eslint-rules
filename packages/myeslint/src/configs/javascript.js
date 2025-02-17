@@ -34,17 +34,18 @@ export const javascript = () => {
 			"customPlugin/structure": [
 				"error",
 				{
+					"fix": false,
 					"folders": [
 						//"src/components",
 						//"src",
 						//"src/utils",
-						//"tests"
+						"tests"
 					],
 					"files": [
 						//"README.md",
 						//"uuuuuuuuuu.json",
-						//"src/yyyyyyyyyy.json",
-						//"package.json",
+						"src/yyyyyyyyyy.json",
+						"package.json",
 						//".gitignore"
 					]
 				}

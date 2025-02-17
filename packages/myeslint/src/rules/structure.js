@@ -13,6 +13,10 @@ export const structure = {
 		schema: [{
 			type: 'object',
 			properties: {
+				fix: {
+					type: 'boolean',
+					default: false,
+				},
 				folders: {
 					type: 'array',
 					items: {
@@ -47,6 +51,7 @@ export const structure = {
 				const options = context.options[0] || {};
 				const requiredFolders = options.folders || [];
 				const requiredFiles = options.files || [];
+				const fix = options.fix
 
 				const missingFolders = checkRequiredFolders(projectRoot, requiredFolders);
 				const missingFiles = checkRequiredFiles(projectRoot, requiredFiles);
@@ -54,24 +59,24 @@ export const structure = {
 				missingFolders.forEach(folder => {
 					context.report({
 						node,
-						message: `Missing required folder: ${folder}`,
-						fix: fixer => {
+						message: `Missing required folder: /${folder}`,
+						fix: fix ? (fixer => {
 							const folderPath = path.join(projectRoot, folder);
 							fs.mkdirSync(folderPath, {recursive: true});
-							return fixer.replaceTextRange([0, 0], `// Created folder: ${folder}\n`);
-						},
+							return fixer.replaceTextRange([0, 0], `// Created folder: /${folder}\n`);
+						}) : null,
 					});
 				})
 
 				missingFiles.forEach(file => {
 					context.report({
 						node,
-						message: `Missing required file: ${file}`,
-						fix: fixer => {
+						message: `Missing required file: /${file}`,
+						fix: fix ? (fixer => {
 							const filePath = path.join(projectRoot, file);
 							fs.writeFileSync(filePath, '');
-							return fixer.replaceTextRange([0, 0], `// Created file: ${file}\n`);
-						},
+							return fixer.replaceTextRange([0, 0], `// Created file: /${file}\n`);
+						}) : null,
 					});
 				})
 			}

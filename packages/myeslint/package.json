@@ -1,11 +1,16 @@
 {
-	"name": "@packages/eslint",
+	"name": "@packages/myeslint",
 	"private": true,
 	"version": "0.0.1",
-	"main": "./eslint.config.js",
 	"type": "module",
+	"main": "bin/index.js",
 	"scripts": {
 		"inspect": "npx @eslint/config-inspector@latest"
+	},
+	"dependencies": {
+		"directory-tree": "^3.5.2",
+		"express": "^4.21.2",
+		"fs": "^0.0.1-security"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^8.17.0",
@@ -16,5 +21,8 @@
 		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"globals": "^15.12.0",
 		"jiti": "^2.4.0"
+	},
+	"bin": {
+		"x-lint": "bin/index.js"
 	}
 }
