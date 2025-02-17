@@ -8,6 +8,7 @@
 		"inspect": "npx @eslint/config-inspector@latest"
 	},
 	"dependencies": {
+		"cors": "^2.8.5",
 		"directory-tree": "^3.5.2",
 		"express": "^4.21.2",
 		"fs": "^0.0.1-security"

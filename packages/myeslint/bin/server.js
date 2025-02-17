@@ -1,24 +1,28 @@
 import chokidar from 'chokidar';
 import express from 'express';
 import path from 'path'
+import cors from 'cors'
 import {WebSocketServer} from 'ws';
 import {buildFileTree} from './helpers/buildFileTree.js'
 
 
 export const server = async () => {
 	const app = express()
-	const port = 6123
-	const clientPort = 3000
+	const SERVER_PORT = 6123
+	const INSPECTOR_PORT = 5173
+	const WEBSOCKET_PORT = 4325
 
+	console.log(path.resolve(process.cwd(), '../myeslint/app/dist'))
+	app.use(express.static(path.resolve(process.cwd(), '../myeslint/app/dist')));  // Рекомендовано использовать path.resolve
 	app.use((req, res, next) => {
-		res.setHeader('Access-Control-Allow-Origin', `http://localhost:${5173}`); // Allow requests from your React app
-		res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-		res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-		res.setHeader('Access-Control-Allow-Credentials', 'true');
+		res.header('Access-Control-Allow-Origin', `http://localhost:${INSPECTOR_PORT}`)
+		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+		res.header('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+		res.header('Access-Control-Allow-Credentials', 'true');
 		next();
 	});
 
-	const wss = new WebSocketServer({port: 8080});
+	const wss = new WebSocketServer({port: WEBSOCKET_PORT});
 
 	wss.on('connection', ws => {
 		console.log('Client connected by web-socket');
@@ -37,7 +41,7 @@ export const server = async () => {
 	// API endpoint to get the file structure
 	app.get('/api/files', async (req, res) => {
 		const projectRoot = process.cwd()
-		const fileTree = await buildFileTree(projectRoot)
+		const fileTree = await buildFileTree(projectRoot, ['node_modules'])
 		res.json(fileTree)
 	});
 
@@ -46,12 +50,12 @@ export const server = async () => {
 		persistent: true
 	});
 
-	watcher.on('all', (event, filePath) => {
-		console.log(`File ${filePath} has been ${event}`);
-		sendMessage({type: 'file-change', path: filePath, event});
+	watcher.on('all', async (event, filePath) => {
+		sendMessage('update')
 	});
 
-	app.listen(port, () => {
-		console.log(`Server listening on http://localhost:${port}`);
+	app.listen(SERVER_PORT, () => {
+		console.log(`✔️\tServer listening: \thttp://localhost:${SERVER_PORT}`);
+		console.log(`✔️\tOpen the inspector: \thttp://localhost:${INSPECTOR_PORT}`);
 	});
 }

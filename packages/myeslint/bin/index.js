@@ -2,13 +2,13 @@
 import {ESLint} from 'eslint';
 import {eslint as config} from '../src/index.js';
 import {server} from './server.js';
+import {exec} from "child_process"
 
 
-
-// Основная функция для запуска ESLint и React-приложения
 async function main() {
-	await lint()
+	//await lint()
 	await server()
+	//await app()
 }
 
 async function lint() {
@@ -18,6 +18,11 @@ async function lint() {
     const resultText = formatter.format(results)
 
 	console.log(resultText)
+}
+
+async function app() {
+	console.log(process.cwd())
+	//exec('yarn dev')
 }
 
 main()

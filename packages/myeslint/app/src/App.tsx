@@ -1,17 +1,19 @@
-import {useWebSocket} from '@siberiacancode/reactuse'
+import {Route, Routes} from 'react-router-dom'
+import {Main} from './pages/Main'
+import {NotFound} from './pages/NotFound'
+import styles from './App.module.scss';
+
+
 
 function App() {
 
-  useWebSocket('http://localhost:8080', {
-    onMessage: (event) => {
-      const data = JSON.parse(event.data)
 
-
-    }
-  })
-
-
-  return <div>Text</div>
+  return <div className={styles.app}>
+    <Routes>
+      <Route path='/' element={<Main />} />
+      <Route path='*' element={<NotFound />} />
+    </Routes>
+  </div>
 }
 
 export default App
