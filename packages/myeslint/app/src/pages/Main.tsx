@@ -1,7 +1,9 @@
 import {useWebSocket} from '@siberiacancode/reactuse'
 import {useEffect, useState} from 'react'
-import {getFileTree, IFileTree} from '../api/tree'
-import {Background, Controls, Position, ReactFlow, useEdgesState, useNodesState} from '@xyflow/react'
+import {getFileTree} from '../api/tree'
+import {Close} from '@mui/icons-material'
+import {Background, Controls, Position, ReactFlow, useEdgesState, useNodesState, Node} from '@xyflow/react'
+import {Box, Button, Drawer, Typography} from '@mui/material'
 import '@xyflow/react/dist/style.css'
 
 
@@ -9,10 +11,32 @@ const nodeDefaults = {
 	sourcePosition: Position.Right,
 	targetPosition: Position.Left,
 	style: {
-		borderRadius: '100%',
 		backgroundColor: '#fff',
-		width: 50,
-		height: 50,
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+}
+
+const dirNode = {
+	sourcePosition: Position.Right,
+	targetPosition: Position.Left,
+	style: {
+		backgroundColor: '#ffc400',
+		color: '#000',
+		fontWeight: '600',
+		display: 'flex',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+}
+
+const fileNode = {
+	sourcePosition: Position.Left,
+	targetPosition: Position.Left,
+	style: {
+		backgroundColor: '#5c6bc0',
+		color: '#fff',
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -69,15 +93,16 @@ const initialEdges = [
 
 
 export const Main = () => {
-	const [tree, setTree] = useState<IFileTree[]>([])
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
+	const [node, setNode] = useState<Node | null>(null)
 
 	useEffect(() => {
 		getFileTree().then(response => {
 			if (!response || !response.data) return
 
-			setTree(response.data)
+			setNodes(response.data.nodes.map(node => node.data.type === 'dir' ? {...node, ...dirNode} : {...node, ...fileNode}))
+			setEdges(response.data.edges)
 		})
 	}, [])
 
@@ -91,7 +116,10 @@ export const Main = () => {
 		}
 	})
 
-	console.log(tree)
+	const clickNodeHandler = (event: React.MouseEvent, node: Node) => {
+		console.log(node)
+		setNode(node)
+	}
 
 	return <div style={{height: '100vh'}}>
 		<ReactFlow
@@ -99,13 +127,22 @@ export const Main = () => {
 			edges={edges}
 			onNodesChange={onNodesChange}
 			onEdgesChange={onEdgesChange}
-			//onNodeDrag={onNodeDrag}
-			//onNodeDragStop={onNodeDragStop}
-			//onConnect={onConnect}
-			//style={{backgroundColor: "#F7F9FB"}}
+			onNodeClick={clickNodeHandler}
 		>
 			<Background />
 			<Controls />
 		</ReactFlow>
+		<Drawer open={!!node} onClose={() => setNode(null)} anchor='right'>
+			<Box sx={{width: '100%', height: '100%', padding: '20px 30px', minWidth: '600px'}}>
+				<Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+					<Typography variant="h5" component="h5">{node?.data.label}</Typography>
+					{/* <Typography variant="h5" component="h5">sdfdas awsd as</Typography> */}
+					<Button onClick={() => setNode(null)}>
+						<Close fontSize='large' />
+					</Button>
+				</Box>
+				<Box></Box>
+			</Box>
+		</Drawer>
 	</div>
 }

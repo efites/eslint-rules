@@ -1,7 +1,6 @@
 import chokidar from 'chokidar';
 import express from 'express';
 import path from 'path'
-import cors from 'cors'
 import {WebSocketServer} from 'ws';
 import {buildFileTree} from './helpers/buildFileTree.js'
 
@@ -12,8 +11,7 @@ export const server = async () => {
 	const INSPECTOR_PORT = 5173
 	const WEBSOCKET_PORT = 4325
 
-	console.log(path.resolve(process.cwd(), '../myeslint/app/dist'))
-	app.use(express.static(path.resolve(process.cwd(), '../myeslint/app/dist')));  // Рекомендовано использовать path.resolve
+	//app.use(express.static(path.resolve(process.cwd(), '../myeslint/app/dist')));  // Рекомендовано использовать path.resolve
 	app.use((req, res, next) => {
 		res.header('Access-Control-Allow-Origin', `http://localhost:${INSPECTOR_PORT}`)
 		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -42,6 +40,7 @@ export const server = async () => {
 	app.get('/api/files', async (req, res) => {
 		const projectRoot = process.cwd()
 		const fileTree = await buildFileTree(projectRoot, ['node_modules'])
+
 		res.json(fileTree)
 	});
 

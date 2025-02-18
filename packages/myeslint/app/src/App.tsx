@@ -1,6 +1,7 @@
 import {Route, Routes} from 'react-router-dom'
 import {Main} from './pages/Main'
 import {NotFound} from './pages/NotFound'
+import './null.scss';
 import styles from './App.module.scss';
 
 
