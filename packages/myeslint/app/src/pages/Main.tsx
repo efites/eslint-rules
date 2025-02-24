@@ -3,8 +3,9 @@ import {useEffect, useState} from 'react'
 import {getFileTree} from '../api/tree'
 import {Close} from '@mui/icons-material'
 import {Background, Controls, Position, ReactFlow, useEdgesState, useNodesState, Node} from '@xyflow/react'
-import {Box, Button, Drawer, Typography} from '@mui/material'
+import {Alert, Box, Button, Drawer, Typography} from '@mui/material'
 import '@xyflow/react/dist/style.css'
+import {getNodeInfo} from '../api/node'
 
 
 const nodeDefaults = {
@@ -106,6 +107,17 @@ export const Main = () => {
 		})
 	}, [])
 
+	useEffect(() => {
+		if (!node) return
+
+		getNodeInfo(node).then(response => {
+			if (!response || !response.data) return
+
+			console.log(response.data)
+		})
+
+	}, [node])
+
 	useWebSocket('http://localhost:4325', {
 		onMessage: async () => {
 			const response = await getFileTree()
@@ -136,12 +148,24 @@ export const Main = () => {
 			<Box sx={{width: '100%', height: '100%', padding: '20px 30px', minWidth: '600px'}}>
 				<Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
 					<Typography variant="h5" component="h5">{node?.data.label}</Typography>
-					{/* <Typography variant="h5" component="h5">sdfdas awsd as</Typography> */}
 					<Button onClick={() => setNode(null)}>
 						<Close fontSize='large' />
 					</Button>
 				</Box>
-				<Box></Box>
+				<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px 0'}}>
+					<Box sx={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
+						<Typography variant="h6" component="h6">Информация о файле</Typography>
+						<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+							<Alert severity="success">This is a success Alert.</Alert>
+						</Box>
+					</Box>
+					<Box sx={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
+						<Typography variant="h6" component="h6">Рекомендации</Typography>
+						<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
+							<Alert severity="success">This is a success Alert.</Alert>
+						</Box>
+					</Box>
+				</Box>
 			</Box>
 		</Drawer>
 	</div>

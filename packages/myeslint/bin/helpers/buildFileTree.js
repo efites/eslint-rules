@@ -1,14 +1,13 @@
-//import {promises as fs} from 'fs';
-import fs from 'fs';
-import path from 'path';
-import madge from 'madge'
+import fs from 'fs'
+import path from 'path'
+import {generateId} from './generateId.js'
 
 
 const HORIZONTAL_SPACING = 270;
 const VERTICAL_SPACING = 80;
 
 export async function buildFileTree(rootPath, skipPaths = [], parentId) {
-	const nodes = [];
+    const nodes = [];
     const edges = [];
     const levelPositions = {}; // Хранит последнюю использованную позицию для каждого уровня
 
@@ -60,7 +59,8 @@ export async function buildFileTree(rootPath, skipPaths = [], parentId) {
 
         const nodeId = currentPath;
         const node = {
-            id: nodeId,
+            id: generateId(currentPath),
+            path: currentPath,
             position: {
                 x: depth === 0 ? -HORIZONTAL_SPACING : depth * HORIZONTAL_SPACING,
                 y: getNextYPosition(depth),
@@ -76,9 +76,9 @@ export async function buildFileTree(rootPath, skipPaths = [], parentId) {
 
         if (parentId !== undefined) {
             edges.push({
-                id: `${parentId}->${nodeId}`,
+                id: generateId(currentPath),
                 source: parentId,
-                target: nodeId,
+                target: currentPath,
             });
         }
 

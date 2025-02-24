@@ -3,6 +3,7 @@ import express from 'express';
 import path from 'path'
 import {WebSocketServer} from 'ws';
 import {buildFileTree} from './helpers/buildFileTree.js'
+import {getNodeInfo} from './helpers/getNodeInfo.js';
 
 
 export const server = async () => {
@@ -43,6 +44,8 @@ export const server = async () => {
 
 		res.json(fileTree)
 	});
+
+	app.get('/api/files/:id', getNodeInfo)
 
 	// Start watching for file changes
 	const watcher = chokidar.watch(path.resolve(process.cwd(), 'src'), {
