@@ -10,8 +10,8 @@ import {structure} from '../rules/structure.js'
 export const javascript = () => {
 
 	return {
-		files: ["src/**/*.js", "src/**/*.ts",],
-		plugins: {
+		files: ["src/**/*.js", "src/**/*.ts", "src/**/*.tsx", "src/**/*.jsx",],
+		/* plugins: {
 			customPlugin: {
 				rules: {
 					//"no-unused-vars": noUnusedVars,
@@ -20,18 +20,19 @@ export const javascript = () => {
 					//"lines-after-imports": linesAfterImports,
 					//"expression-to-arrow-function": expressionToArrowFunction, БРАК
 					//"console-log-to-info": consoleLogToInfo,
-					"structure": structure,
+					//"structure": structure,
 				}
 			}
-		},
+		}, */
 		rules: {
+			'no-unused-vars': 'error'
 			//"customPlugin/no-unused-vars": "error",
 			//"customPlugin/vars": "error",
 			//"customPlugin/sort-imports": "warn",
 			//"customPlugin/lines-after-imports": ["warn", 2],
 			// "customPlugin/expression-to-arrow-function": "warn", БРАК
 			//"customPlugin/console-log-to-info": "error",
-			"customPlugin/structure": [
+			/* "customPlugin/structure": [
 				"error",
 				{
 					"folders": [
@@ -48,7 +49,7 @@ export const javascript = () => {
 						//".gitignore"
 					]
 				}
-			],
+			], */
 
 			//"id-length": "error",
 		}

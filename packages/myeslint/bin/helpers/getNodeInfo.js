@@ -1,6 +1,6 @@
 import {ESLint} from "eslint"
 import {generateId} from './generateId.js'
-import { parse } from "@babel/parser";
+import {eslint as ESLintConfig} from '../../src/index.js'
 import fs from 'fs'
 import path from 'path'
 
@@ -9,68 +9,80 @@ export async function getNodeInfo(request, response) {
 	const {id} = request.params
 	const filePath = getFilePathById(id)
 
-	const eslint = new ESLint();
-	const results = await eslint.lintFiles([filePath]);
-	const formattedResults = results.map(result => {
-		const fileInfo = analyzeFile(result.filePath);
+	const result = await analyzeFile(filePath)
 
-		return {
-			filePath: result.filePath,
-			errorCount: result.errorCount,
-			warningCount: result.warningCount,
-			messages: result.messages,
-			...fileInfo,
-		};
-	});
-
-	return response.json(formattedResults, null, 2)
+	return response.json(result)
 }
 
-function analyzeFile(filePath) {
-	const content = fs.readFileSync(filePath, "utf-8");
-	const ast = parse(content, {
-		sourceType: "module",
-		plugins: ["jsx"], // Добавьте плагины, если используете JSX или другие фичи
-	});
+async function analyzeFile(filePath) {
+	if (!fs.existsSync(filePath)) {
+		throw new Error(`Файл не существует: ${filePath}`);
+	}
 
-	// Подсчет импортов
-	const imports = ast.program.body.filter(node => node.type === "ImportDeclaration").length;
+	const eslint = new ESLint({baseConfig: ESLintConfig()});
 
-	// Подсчет сложности методов (пример)
-	const complexity = 0; // Здесь можно использовать библиотеку для анализа сложности
+	// Анализ файла с помощью ESLint
+	const results = await eslint.lintFiles([filePath]);
+
+	if (results.length === 0) {
+		return {errors: [], warnings: [], metrics: {}};
+	}
+
+	const fileResult = results[0];
+
+	// 🔹 Разбираем ошибки и предупреждения
+	const errors = fileResult.messages.filter(msg => msg.severity === 2);
+	const warnings = fileResult.messages.filter(msg => msg.severity === 1);
+
+	// 🔹 Читаем код файла для анализа метрик
+	const code = fs.readFileSync(filePath, "utf8");
+
+	const metrics = {
+		imports: (code.match(/import\s+/g) || []).length, // Количество импортов
+		functions: (code.match(/function\s+\w+|const\s+\w+\s*=\s*\(/g) || []).length, // Количество функций
+		variables: (code.match(/const\s+\w+|let\s+\w+|var\s+\w+/g) || []).length, // Количество переменных
+		lines: code.split("\n").length, // Количество строк в файле
+		maxComplexity: Math.max(
+			...(fileResult.messages
+				.filter(msg => msg.ruleId === "complexity")
+				.map(msg => parseInt(msg.message.match(/\d+/)?.[0] || "0", 10)) || [0]
+			)
+		) // Максимальная сложность методов
+	};
 
 	return {
-		imports,
-		complexity,
+		errors,
+		warnings,
+		metrics
 	};
 }
 
 function getFilePathById(id, projectPath = process.cwd()) {
 	if (!fs.existsSync(projectPath)) {
-        throw new Error(`Путь не существует: ${projectPath}`);
-    }
+		throw new Error(`Путь не существует: ${projectPath}`);
+	}
 
-    const items = fs.readdirSync(projectPath);
+	const items = fs.readdirSync(projectPath);
 
-    for (const item of items) {
-        const itemPath = path.join(projectPath, item);
-        const stat = fs.statSync(itemPath);
+	for (const item of items) {
+		const itemPath = path.join(projectPath, item);
+		const stat = fs.statSync(itemPath);
 
-        const uuid = generateId(itemPath);
+		const uuid = generateId(itemPath);
 
-        if (uuid === id) {
-            return itemPath; // Найден файл или папка с нужным UUID
-        }
+		if (uuid === id) {
+			return itemPath; // Найден файл или папка с нужным UUID
+		}
 
-        if (stat.isDirectory()) {
-            const result = getFilePathById(id, itemPath);
-            if (result) {
-                return result; // Найден файл или папка в поддиректории
-            }
-        }
-    }
+		if (stat.isDirectory()) {
+			const result = getFilePathById(id, itemPath);
+			if (result) {
+				return result; // Найден файл или папка в поддиректории
+			}
+		}
+	}
 
-    return null; // UUID не найден
+	return null; // UUID не найден
 }
 
 /*export interface INodeInfo {
