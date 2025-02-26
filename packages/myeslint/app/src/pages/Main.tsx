@@ -1,11 +1,11 @@
 import {useWebSocket} from '@siberiacancode/reactuse'
 import {useEffect, useState} from 'react'
 import {getFileTree} from '../api/tree'
-import {Close} from '@mui/icons-material'
+import {Check, Close, ErrorOutline, ExpandMore} from '@mui/icons-material'
 import {Background, Controls, Position, ReactFlow, useEdgesState, useNodesState, Node} from '@xyflow/react'
-import {Alert, Box, Button, Drawer, Typography} from '@mui/material'
+import {Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Drawer, Typography} from '@mui/material'
+import {getNodeInfo, INodeInfo} from '../api/node'
 import '@xyflow/react/dist/style.css'
-import {getNodeInfo} from '../api/node'
 
 
 const nodeDefaults = {
@@ -97,6 +97,7 @@ export const Main = () => {
 	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 	const [node, setNode] = useState<Node | null>(null)
+	const [nodeInfo, setNodeInfo] = useState<INodeInfo | null>(null)
 
 	useEffect(() => {
 		getFileTree().then(response => {
@@ -113,7 +114,7 @@ export const Main = () => {
 		getNodeInfo(node).then(response => {
 			if (!response || !response.data) return
 
-			console.log(response.data)
+			setNodeInfo(response.data)
 		})
 
 	}, [node])
@@ -129,7 +130,6 @@ export const Main = () => {
 	})
 
 	const clickNodeHandler = (event: React.MouseEvent, node: Node) => {
-		console.log(node)
 		setNode(node)
 	}
 
@@ -153,16 +153,73 @@ export const Main = () => {
 					</Button>
 				</Box>
 				<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px 0'}}>
-					<Box sx={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
-						<Typography variant="h6" component="h6">Информация о файле</Typography>
-						<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-							<Alert severity="success">This is a success Alert.</Alert>
+					<Box sx={{display: 'flex', flexDirection: 'column', gap: '35px'}}>
+						{/* <Typography variant="h6" component="h6">Информация о файле</Typography> */}
+						<Box sx={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+							<Typography variant="h6" component="h6">Ошибки</Typography>
+							{nodeInfo && !nodeInfo.errors.length && (
+								<Alert icon={<Check fontSize="inherit" />} severity="success">
+									Ошибки не были найдены
+								</Alert>
+							)}
+							{nodeInfo?.errors.map(error => {
+								return <Accordion key={`${nodeInfo.path}-${error.column}`}>
+									<AccordionSummary
+										expandIcon={<ExpandMore />}
+										aria-controls="panel1-content"
+										id="panel1-header"
+										sx={{
+											'>span.MuiAccordionSummary-content': {
+												margin: '10px 0'
+											}
+										}}
+									>
+										<Box sx={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+											<ErrorOutline color='error' />
+											<Typography variant="subtitle1">{error.message}</Typography>
+										</Box>
+									</AccordionSummary>
+									<AccordionDetails sx={{display: 'flex', flexDirection: 'column', gap: '3px'}}>
+										<Typography variant="body1">Путь: {nodeInfo.path}</Typography>
+										<Typography variant="body1">Номер строки: {error.line}</Typography>
+										<Typography variant="body1">Номер колонки: {error.column}</Typography>
+										<Typography variant="body1">Тип ошибки: {error.ruleId}</Typography>
+									</AccordionDetails>
+								</Accordion>
+							})}
 						</Box>
-					</Box>
-					<Box sx={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
-						<Typography variant="h6" component="h6">Рекомендации</Typography>
-						<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px'}}>
-							<Alert severity="success">This is a success Alert.</Alert>
+						<Box sx={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
+							<Typography variant="h6" component="h6">Предупреждения</Typography>
+							{nodeInfo && !nodeInfo.warnings.length && (
+								<Alert icon={<Check fontSize="inherit" />} severity="success">
+									Предупреждения не были найдены
+								</Alert>
+							)}
+							{nodeInfo?.warnings.map(warning => {
+								return <Accordion key={`${nodeInfo.path}-${warning.column}`}>
+									<AccordionSummary
+										expandIcon={<ExpandMore />}
+										aria-controls="panel1-content"
+										id="panel1-header"
+										sx={{
+											'>span.MuiAccordionSummary-content': {
+												margin: '10px 0'
+											}
+										}}
+									>
+										<Box sx={{display: 'flex', gap: '10px', alignItems: 'center'}}>
+											<ErrorOutline color='warning' />
+											<Typography variant="subtitle1">{warning.message}</Typography>
+										</Box>
+									</AccordionSummary>
+									<AccordionDetails sx={{display: 'flex', flexDirection: 'column', gap: '3px'}}>
+										<Typography variant="body1">Путь: {nodeInfo.path}</Typography>
+										<Typography variant="body1">Номер строки: {warning.line}</Typography>
+										<Typography variant="body1">Номер колонки: {warning.column}</Typography>
+										<Typography variant="body1">Тип ошибки: {warning.ruleId}</Typography>
+									</AccordionDetails>
+								</Accordion>
+							})}
 						</Box>
 					</Box>
 				</Box>

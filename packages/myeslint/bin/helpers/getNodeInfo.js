@@ -19,6 +19,19 @@ async function analyzeFile(filePath) {
 		throw new Error(`Файл не существует: ${filePath}`);
 	}
 
+	const stat = fs.statSync(filePath)
+
+	if (stat.isDirectory()) {
+		const result = {
+			errors: [],
+			warnings: [],
+			metrics: null,
+			path: path.normalize(filePath.replace(process.cwd(), '')).replace(/\\/g, '/'),
+		}
+
+		return result
+	}
+
 	const eslint = new ESLint({baseConfig: ESLintConfig()});
 
 	// Анализ файла с помощью ESLint
@@ -31,8 +44,8 @@ async function analyzeFile(filePath) {
 	const fileResult = results[0];
 
 	// 🔹 Разбираем ошибки и предупреждения
-	const errors = fileResult.messages.filter(msg => msg.severity === 2);
-	const warnings = fileResult.messages.filter(msg => msg.severity === 1);
+	const errors = fileResult.messages.filter(msg => msg.severity === 2)
+	const warnings = fileResult.messages.filter(msg => msg.severity === 1 && msg.message !== 'File ignored because no matching configuration was supplied.')
 
 	// 🔹 Читаем код файла для анализа метрик
 	const code = fs.readFileSync(filePath, "utf8");
@@ -53,7 +66,8 @@ async function analyzeFile(filePath) {
 	return {
 		errors,
 		warnings,
-		metrics
+		metrics,
+		path: path.normalize(fileResult.filePath.replace(process.cwd(), '')).replace(/\\/g, '/'),
 	};
 }
 

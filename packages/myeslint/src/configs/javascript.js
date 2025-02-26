@@ -25,7 +25,7 @@ export const javascript = () => {
 			}
 		}, */
 		rules: {
-			'no-unused-vars': 'error'
+			//'no-unused-vars': 'error'
 			//"customPlugin/no-unused-vars": "error",
 			//"customPlugin/vars": "error",
 			//"customPlugin/sort-imports": "warn",
