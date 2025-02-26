@@ -1,6 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import {generateId} from './generateId.js'
+import {ESLint} from "eslint"
+import {eslint as ESLintConfig} from '../../src/index.js'
 
 
 const HORIZONTAL_SPACING = 270;
@@ -69,16 +71,32 @@ export async function buildFileTree(rootPath, skipPaths = [], parentId) {
                 label: label,
                 type: type,
                 contentCount: type === 'dir' ? countContents(currentPath) : 0,
+                errors: 0,
+                warnings: 0,
             },
         };
+
+        if (type === 'file') {
+            const eslint = new ESLint({baseConfig: ESLintConfig()})
+            const analyzeResult = await eslint.lintFiles([currentPath])
+
+            if (analyzeResult.length !== 0) {
+                const fileResult = analyzeResult[0]
+                const errors = fileResult.messages.filter(msg => msg.severity === 2)
+                const warnings = fileResult.messages.filter(msg => msg.severity === 1 && msg.message !== 'File ignored because no matching configuration was supplied.')
+
+                node.data.errors = errors.length
+                node.data.warnings = warnings.length
+            }
+        }
 
         nodes.push(node);
 
         if (parentId !== undefined) {
             edges.push({
                 id: generateId(currentPath),
-                source: parentId,
-                target: currentPath,
+                source: generateId(parentId),
+                target: generateId(currentPath),
             });
         }
 

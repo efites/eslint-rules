@@ -4,6 +4,7 @@ import axios, {AxiosResponse} from 'axios'
 
 
 interface IError {
+	id: string
 	column: number
 	endColumn: number
 	endLine: number
@@ -15,6 +16,7 @@ interface IError {
 }
 
 interface IWarning {
+	id: string
 	column: number
 	endColumn: number
 	endLine: number

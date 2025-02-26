@@ -3,6 +3,7 @@ import {generateId} from './generateId.js'
 import {eslint as ESLintConfig} from '../../src/index.js'
 import fs from 'fs'
 import path from 'path'
+import {v4} from 'uuid'
 
 
 export async function getNodeInfo(request, response) {
@@ -44,8 +45,8 @@ async function analyzeFile(filePath) {
 	const fileResult = results[0];
 
 	// 🔹 Разбираем ошибки и предупреждения
-	const errors = fileResult.messages.filter(msg => msg.severity === 2)
-	const warnings = fileResult.messages.filter(msg => msg.severity === 1 && msg.message !== 'File ignored because no matching configuration was supplied.')
+	const errors = fileResult.messages.filter(msg => msg.severity === 2).map(error => ({...error, id: v4()}))
+	const warnings = fileResult.messages.filter(msg => msg.severity === 1 && msg.message !== 'File ignored because no matching configuration was supplied.').map(warning => ({...warning, id: v4()}))
 
 	// 🔹 Читаем код файла для анализа метрик
 	const code = fs.readFileSync(filePath, "utf8");

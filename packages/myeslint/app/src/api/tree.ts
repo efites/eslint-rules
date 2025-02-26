@@ -11,6 +11,8 @@ export interface INode {
 		label: string,
 		type: 'dir' | 'file',
 		contentCount: number
+		errors: number
+		warnings: number
 	}
 }
 

@@ -3,8 +3,10 @@ import {useEffect, useState} from 'react'
 import {getFileTree} from '../api/tree'
 import {Check, Close, ErrorOutline, ExpandMore} from '@mui/icons-material'
 import {Background, Controls, Position, ReactFlow, useEdgesState, useNodesState, Node} from '@xyflow/react'
-import {Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Drawer, Typography} from '@mui/material'
+import {Accordion, AccordionDetails, AccordionSummary, Alert, Box, Button, Divider, Drawer, Typography} from '@mui/material'
 import {getNodeInfo, INodeInfo} from '../api/node'
+import {FileNode} from '../components/FileNode/FileNode'
+import {DirNode} from '../components/DirNode/DirNode'
 import '@xyflow/react/dist/style.css'
 
 
@@ -20,28 +22,11 @@ const nodeDefaults = {
 }
 
 const dirNode = {
-	sourcePosition: Position.Right,
-	targetPosition: Position.Left,
-	style: {
-		backgroundColor: '#ffc400',
-		color: '#000',
-		fontWeight: '600',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
+	type: 'dirNode',
 }
 
 const fileNode = {
-	sourcePosition: Position.Left,
-	targetPosition: Position.Left,
-	style: {
-		backgroundColor: '#5c6bc0',
-		color: '#fff',
-		display: 'flex',
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
+	type: 'fileNode',
 }
 
 const initialNodes = [
@@ -92,9 +77,10 @@ const initialEdges = [
 	},
 ]
 
+const nodeTypes = {fileNode: FileNode, dirNode: DirNode}
 
 export const Main = () => {
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
+	const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes)
 	const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
 	const [node, setNode] = useState<Node | null>(null)
 	const [nodeInfo, setNodeInfo] = useState<INodeInfo | null>(null)
@@ -125,11 +111,12 @@ export const Main = () => {
 
 			if (!response || !response.data) return
 
-			setTree(response.data)
+			setNodes(response.data.nodes.map(node => node.data.type === 'dir' ? {...node, ...dirNode} : {...node, ...fileNode}))
+			setEdges(response.data.edges)
 		}
 	})
 
-	const clickNodeHandler = (event: React.MouseEvent, node: Node) => {
+	const clickNodeHandler = (_: React.MouseEvent, node: Node) => {
 		setNode(node)
 	}
 
@@ -140,6 +127,8 @@ export const Main = () => {
 			onNodesChange={onNodesChange}
 			onEdgesChange={onEdgesChange}
 			onNodeClick={clickNodeHandler}
+			nodeTypes={nodeTypes}
+			connectionLineStyle={{stroke: 'green', strokeWidth: 2}}
 		>
 			<Background />
 			<Controls />
@@ -147,7 +136,7 @@ export const Main = () => {
 		<Drawer open={!!node} onClose={() => setNode(null)} anchor='right'>
 			<Box sx={{width: '100%', height: '100%', padding: '20px 30px', minWidth: '600px'}}>
 				<Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-					<Typography variant="h5" component="h5">{node?.data.label}</Typography>
+					<Typography variant="h5" component="h5" fontWeight={'bold'}>{String(node?.data.label)}</Typography>
 					<Button onClick={() => setNode(null)}>
 						<Close fontSize='large' />
 					</Button>
@@ -155,15 +144,16 @@ export const Main = () => {
 				<Box sx={{display: 'flex', flexDirection: 'column', gap: '20px', padding: '40px 0'}}>
 					<Box sx={{display: 'flex', flexDirection: 'column', gap: '35px'}}>
 						{/* <Typography variant="h6" component="h6">Информация о файле</Typography> */}
+						<Divider />
 						<Box sx={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-							<Typography variant="h6" component="h6">Ошибки</Typography>
+							<Typography variant="h6" component="h6" fontWeight={'medium'}>Ошибки</Typography>
 							{nodeInfo && !nodeInfo.errors.length && (
 								<Alert icon={<Check fontSize="inherit" />} severity="success">
 									Ошибки не были найдены
 								</Alert>
 							)}
-							{nodeInfo?.errors.map(error => {
-								return <Accordion key={`${nodeInfo.path}-${error.column}`}>
+							{nodeInfo?.errors.map((error) => {
+								return <Accordion key={error.id}>
 									<AccordionSummary
 										expandIcon={<ExpandMore />}
 										aria-controls="panel1-content"
@@ -188,15 +178,16 @@ export const Main = () => {
 								</Accordion>
 							})}
 						</Box>
+						<Divider />
 						<Box sx={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-							<Typography variant="h6" component="h6">Предупреждения</Typography>
+							<Typography variant="h6" component="h6" fontWeight={'medium'}>Предупреждения</Typography>
 							{nodeInfo && !nodeInfo.warnings.length && (
 								<Alert icon={<Check fontSize="inherit" />} severity="success">
 									Предупреждения не были найдены
 								</Alert>
 							)}
 							{nodeInfo?.warnings.map(warning => {
-								return <Accordion key={`${nodeInfo.path}-${warning.column}`}>
+								return <Accordion key={warning.id}>
 									<AccordionSummary
 										expandIcon={<ExpandMore />}
 										aria-controls="panel1-content"
