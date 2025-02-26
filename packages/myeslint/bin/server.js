@@ -12,7 +12,7 @@ export const server = async () => {
 	const INSPECTOR_PORT = 5173
 	const WEBSOCKET_PORT = 4325
 
-	//app.use(express.static(path.resolve(process.cwd(), '../myeslint/app/dist')));  // Рекомендовано использовать path.resolve
+	app.use(express.static(path.resolve(process.cwd(), '../myeslint/app/dist')));  // Рекомендовано использовать path.resolve
 	app.use((req, res, next) => {
 		res.header('Access-Control-Allow-Origin', `http://localhost:${INSPECTOR_PORT}`)
 		res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
