@@ -57,7 +57,6 @@ export const server = async () => {
 	});
 
 	app.listen(SERVER_PORT, () => {
-		console.log(`✔️\tServer listening: \thttp://localhost:${SERVER_PORT}`);
-		console.log(`✔️\tOpen the inspector: \thttp://localhost:${INSPECTOR_PORT}`);
+		console.log(`✔️\tOpen the inspector: \thttp://localhost:${SERVER_PORT}`);
 	});
 }
