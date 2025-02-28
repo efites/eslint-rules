@@ -28,3 +28,20 @@ type: 'dir' | 'file'
 Напиши как на NodeJs сделать так, чтобы файл по абсолютному пути проверялся при помощи eslint v.9 и возвращал результат об ошибках и предупреждениях, а также о количестве импортов, максимальной сложности методов и другие параметры файлов типа ts, tsx, js, jsx?
 
 Цикломатическая сложность определяется как измерение "объема логики принятия решений в функции исходного кода"
+
+
+У меня другая структура файлов:
+/packages/
+/packages/myeslint/
+/packages/myeslint/packages/
+/packages/myeslint/packages/app/
+/packages/myeslint/packages/bin/
+/packages/myreact/
+/package.json
+
+Я хочу сделать так, чтобы при вводе команды "npx x-lint" без лишних аргументов в проекте /packages/myreact/ выполнялся файл по пути: packages/myeslint/packages/bin/index.js
+Следующие папки являются workspaces: 
+/packages/myeslint/
+/packages/myreact/
+/packages/myeslint/packages/app/
+/packages/myeslint/packages/bin/

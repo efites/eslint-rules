@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import {ESLint} from 'eslint';
-import {eslint as config} from '../src/index.js';
+import {eslint as config} from 'neweslint';
 import {server} from './server.js';
-import {exec} from "child_process"
 
 
 async function main() {
