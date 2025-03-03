@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import {generateId} from './generateId.js'
 import {ESLint} from "eslint"
-import {eslint as ESLintConfig} from '@efites/eslint'
+import {eslint as ESLintConfig} from '../../eslint-config/index.js'
 
 
 const HORIZONTAL_SPACING = 270;

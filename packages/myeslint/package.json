@@ -4,10 +4,9 @@
 	"version": "0.0.1",
 	"type": "module",
 	"workspaces": [
-		"packages/bin",
 		"packages/*"
 	],
 	"bin": {
-		"x-lint": "packages/bin/index.js"
+		"x-lint": "packages/eslint-config-inspector/index.js"
 	}
 }
