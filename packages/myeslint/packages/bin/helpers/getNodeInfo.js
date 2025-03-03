@@ -1,6 +1,6 @@
 import {ESLint} from "eslint"
 import {generateId} from './generateId.js'
-import {eslint as ESLintConfig} from 'neweslint'
+import {eslint as ESLintConfig} from '@efites/eslint'
 import fs from 'fs'
 import path from 'path'
 import {v4} from 'uuid'

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import {ESLint} from 'eslint';
-import {eslint as config} from 'neweslint';
+import {eslint as config} from '@efites/eslint';
 import {server} from './server.js';
 
 

@@ -1,5 +1,5 @@
 {
-	"name": "neweslint",
+	"name": "@efites/eslint",
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
