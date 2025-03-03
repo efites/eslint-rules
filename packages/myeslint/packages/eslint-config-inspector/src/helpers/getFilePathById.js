@@ -1,3 +1,8 @@
+import fs from 'fs'
+import path from 'path'
+import {generateId} from './generateId.js'
+
+
 export const getFilePathById = (id, projectPath = process.cwd()) => {
 	if (!fs.existsSync(projectPath)) {
 		throw new Error(`Путь не существует: ${projectPath}`);

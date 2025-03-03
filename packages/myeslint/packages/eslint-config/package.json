@@ -3,5 +3,12 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
-	"main": "./index.js"
+	"main": "./index.js",
+	"dependencies": {
+		"@typescript-eslint/eslint-plugin": "^8.25.0",
+		"@typescript-eslint/parser": "^8.25.0",
+		"eslint-plugin-react": "^7.37.4",
+		"eslint-plugin-react-hooks": "^5.2.0",
+		"eslint-plugin-unicorn": "^57.0.0"
+	}
 }

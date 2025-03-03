@@ -1,3 +1,10 @@
+import fs from 'fs'
+import path from 'path'
+import {v4} from 'uuid'
+import {ESLint} from 'eslint'
+import {eslint as ESLintConfig} from '../../../eslint-config/index.js'
+
+
 export const analyzeFile = async (filePath) => {
 	if (!fs.existsSync(filePath)) {
 		throw new Error(`Файл не существует: ${filePath}`);

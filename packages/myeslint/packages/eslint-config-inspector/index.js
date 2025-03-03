@@ -1,22 +1,25 @@
 #!/usr/bin/env node
 import 'dotenv/config'
 import cors from 'cors'
-import path from 'path'
 import express from 'express'
+import path, {dirname} from 'path'
 import {websocket} from './src/websocket.js'
 import {router} from './src/routes/routes.js'
+import {fileURLToPath} from 'url'
 
 export const SERVER_URL = process.env.SERVER_URL || 'http://localhost'
-export const SERVER_PORT = process.env.SERVER_PORT || 3344
-export const INSPECTOR_PORT = process.env.INSPECTOR_PORT || 4455
-export const WEBSOCKET_PORT = process.env.APP_PORT || 5566
+export const SERVER_PORT = process.env.SERVER_PORT || 8765 || 3344
+export const INSPECTOR_PORT = process.env.INSPECTOR_PORT || 7654 || 4455
+export const WEBSOCKET_PORT = process.env.APP_PORT || 6543 || 5566
 
-const whitelist = [`${SERVER_URL}:${WEBSOCKET_PORT}`, `${SERVER_URL}:5173`]
+
+const whitelist = [`${SERVER_URL}:${SERVER_PORT}/`, `${SERVER_URL}:5173/`]
 const corsOptions = {
-	origin: (origin, callback) => {
-		if (whitelist.indexOf(origin) !== -1) {
+	origin: function (origin, callback) {
+		if (whitelist.indexOf(origin) !== -1 || !origin) {
 			callback(null, true)
 		} else {
+			console.log(origin)
 			callback(new Error('Not allowed by CORS'))
 		}
 	}, // Запросы только с этого источника
@@ -26,14 +29,16 @@ const corsOptions = {
 	optionsSuccessStatus: 204 //  Некоторые старые браузеры (IE11) требуют 204 для OPTIONS
 }
 
+
 // Init an app
 const app = express()
-console.log('Path:', path.resolve('./app/dist'))
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 // Routes
-app.use(express.static(path.resolve('./app/dist')));
+app.use(express.static(path.join(__dirname, 'app', 'dist')));
 app.use('/', router)
 app.use(cors(corsOptions))
-websocket().then(data => console.log('WebSocket:', data))
+websocket()
 
 // Start
 app.listen(SERVER_PORT, () => {
