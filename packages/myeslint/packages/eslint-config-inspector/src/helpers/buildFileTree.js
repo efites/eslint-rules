@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import {generateId} from './generateId.js'
 import {ESLint} from "eslint"
-import {eslint as ESLintConfig} from '../../../eslint-config/index.js'
+import {config as ESLintConfig} from '../../index.js'
 
 
 const HORIZONTAL_SPACING = 270;
@@ -77,7 +77,7 @@ export async function buildFileTree(rootPath, skipPaths = []) {
         };
 
         if (type === 'file') {
-            const eslint = new ESLint({baseConfig: ESLintConfig()})
+            const eslint = new ESLint({baseConfig: ESLintConfig})
             const analyzeResult = await eslint.lintFiles([currentPath])
 
             if (analyzeResult.length !== 0) {

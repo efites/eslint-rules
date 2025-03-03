@@ -3,15 +3,18 @@ import 'dotenv/config'
 import cors from 'cors'
 import express from 'express'
 import path, {dirname} from 'path'
+import {fileURLToPath} from 'url'
 import {websocket} from './src/websocket.js'
 import {router} from './src/routes/routes.js'
-import {fileURLToPath} from 'url'
+import {getConfig} from './src/helpers/getConfig.js'
+import {eslint as EslintInitConfig} from '@efites/eslint-config'
+
+
 
 export const SERVER_URL = process.env.SERVER_URL || 'http://localhost'
 export const SERVER_PORT = process.env.SERVER_PORT || 8765 || 3344
 export const INSPECTOR_PORT = process.env.INSPECTOR_PORT || 7654 || 4455
 export const WEBSOCKET_PORT = process.env.APP_PORT || 6543 || 5566
-
 
 const whitelist = [`${SERVER_URL}:${SERVER_PORT}/`, `${SERVER_URL}:5173/`]
 const corsOptions = {
@@ -32,6 +35,10 @@ const corsOptions = {
 
 // Init an app
 const app = express()
+export let config = []
+getConfig(config).then(conf => {
+	config = conf.default
+})
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 // Routes

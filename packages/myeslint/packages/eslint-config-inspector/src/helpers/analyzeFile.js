@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import {v4} from 'uuid'
 import {ESLint} from 'eslint'
-import {eslint as ESLintConfig} from '../../../eslint-config/index.js'
+import {config} from '../../index.js'
 
 
 export const analyzeFile = async (filePath) => {
@@ -23,7 +23,7 @@ export const analyzeFile = async (filePath) => {
 		return result
 	}
 
-	const eslint = new ESLint({baseConfig: ESLintConfig()});
+	const eslint = new ESLint({baseConfig: config});
 
 	// Анализ файла с помощью ESLint
 	const results = await eslint.lintFiles([filePath]);

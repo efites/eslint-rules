@@ -1,7 +1,9 @@
 import {react} from './configs/index.js'
 
 
-const eslint = () => {
+const eslint = (config) => {
+	if (config) return config
+
 	const configs = []
 
 	configs.push(react())
