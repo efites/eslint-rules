@@ -27,11 +27,11 @@ interface IResponse {
 	edges: IEdge[]
 }
 
-axios.defaults.baseURL = 'http://localhost:6123'
+axios.defaults.baseURL = `http://localhost:${import.meta.env.VITE_SERVER_PORT}`
 
 export const getFileTree = async (): Promise<AxiosResponse<IResponse, undefined> | undefined> => {
 	try {
-		const response = await axios.get<IResponse>('/api/files')
+		const response = await axios.get<IResponse>('/tree')
 		return response
 	} catch (error) {
 		console.error(error)

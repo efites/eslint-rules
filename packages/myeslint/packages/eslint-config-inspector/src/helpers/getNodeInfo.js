@@ -99,21 +99,3 @@ function getFilePathById(id, projectPath = process.cwd()) {
 
 	return null; // UUID не найден
 }
-
-/*export interface INodeInfo {
-	path: string,
-	imports: number,
-	complexity: number
-	errors: [{
-		id: number
-		message: string
-		line: number
-		column: number
-	}],
-	warnings: [{
-		id: number
-		message: string
-		line: number
-		column: number
-	}],
-} */

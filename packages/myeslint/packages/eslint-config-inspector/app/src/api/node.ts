@@ -43,7 +43,7 @@ export interface INodeInfo {
 
 export const getNodeInfo = async (node: Node): Promise<AxiosResponse<INodeInfo, undefined> | undefined> => {
 	try {
-		const response = await axios.get<INodeInfo>(`/api/files/${node.id}`)
+		const response = await axios.get<INodeInfo>(`/tree/${node.id}`)
 		return response
 	} catch (error) {
 		console.error(error)

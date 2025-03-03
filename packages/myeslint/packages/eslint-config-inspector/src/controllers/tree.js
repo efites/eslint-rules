@@ -1,6 +1,6 @@
-import {buildFileTree} from '../helpers/buildFileTree'
-import {getFilePathById} from '../helpers/getFilePathById'
-import {analyzeFile} from '../helpers/analyzeFile'
+import {buildFileTree} from '../helpers/buildFileTree.js'
+import {getFilePathById} from '../helpers/getFilePathById.js'
+import {analyzeFile} from '../helpers/analyzeFile.js'
 
 
 

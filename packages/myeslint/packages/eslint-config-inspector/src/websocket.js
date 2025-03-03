@@ -1,7 +1,7 @@
 import chokidar from 'chokidar';
 import path from 'path'
 import {WebSocketServer} from 'ws';
-import {WEBSOCKET_PORT} from '../index'
+import {WEBSOCKET_PORT} from '../index.js'
 
 
 export const websocket = async () => {

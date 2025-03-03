@@ -2,13 +2,13 @@ import fs from 'fs'
 import path from 'path'
 import {generateId} from './generateId.js'
 import {ESLint} from "eslint"
-import {eslint as ESLintConfig} from '../../eslint-config/index.js'
+import {eslint as ESLintConfig} from '../../../eslint-config/index.js'
 
 
 const HORIZONTAL_SPACING = 270;
 const VERTICAL_SPACING = 80;
 
-export async function buildFileTree(rootPath, skipPaths = [], parentId) {
+export async function buildFileTree(rootPath, skipPaths = []) {
     const nodes = [];
     const edges = [];
     const levelPositions = {}; // Хранит последнюю использованную позицию для каждого уровня

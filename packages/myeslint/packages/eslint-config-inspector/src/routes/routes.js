@@ -1,10 +1,9 @@
 import Router from 'express'
-import {router as tree} from './tree'
-import {SERVER_URL, SERVER_PORT} from '../../index'
+import {router as treeRoute} from './tree.js'
 
 
 const router = new Router()
 
-router.use('/tree', tree)
+router.use('/tree', treeRoute)
 
 export {router}

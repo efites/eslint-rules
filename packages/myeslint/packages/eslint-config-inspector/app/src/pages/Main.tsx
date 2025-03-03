@@ -105,7 +105,7 @@ export const Main = () => {
 
 	}, [node])
 
-	useWebSocket('http://localhost:4325', {
+	useWebSocket(`${import.meta.env.VITE_SERVER_URL}:${import.meta.env.VITE_WEBSOCKET_PORT}`, {
 		onMessage: async () => {
 			const response = await getFileTree()
 
