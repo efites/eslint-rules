@@ -1,10 +1,16 @@
 import path from 'path'
-import {pathToFileURL} from 'url'
+import fs from 'fs'
 
 
 export const getConfig = async () => {
 	const eslintFilePath = path.resolve(process.cwd(), './eslint.config.js')
-	const eslintFileUrl = pathToFileURL(eslintFilePath).toString();
+	//const eslintFileUrl = pathToFileURL(eslintFilePath).toString()
 
-	return await import(eslintFileUrl)
+	try {
+		const config = await import(eslintFilePath)
+
+		return config.default
+	} catch {
+		return [{}]
+	}
 }

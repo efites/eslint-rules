@@ -6,7 +6,7 @@
 		"packages/*"
 	],
 	"scripts": {
-		"prepare": "husky && cd ./packages/react && yarn && cd ../myeslint && yarn"
+		"prepare": "cd ./packages/react && yarn && cd ../myeslint && yarn"
 	},
 	"devDependencies": {
 		"husky": "^9.1.6",

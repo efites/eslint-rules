@@ -23,7 +23,7 @@ export const analyzeFile = async (filePath) => {
 		return result
 	}
 
-	const eslint = new ESLint({baseConfig: config});
+	const eslint = new ESLint({baseConfig: config ?? [{}]});
 
 	// Анализ файла с помощью ESLint
 	const results = await eslint.lintFiles([filePath]);

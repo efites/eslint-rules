@@ -4,8 +4,9 @@ import {WebSocketServer} from 'ws';
 import {WEBSOCKET_PORT} from '../index.js'
 
 
+export let wss = null
 export const websocket = async () => {
-	const wss = new WebSocketServer({port: WEBSOCKET_PORT});
+	wss = new WebSocketServer({port: WEBSOCKET_PORT});
 
 	wss.on('connection', ws => {
 		console.log('Client connected by web-socket');
@@ -23,7 +24,7 @@ export const websocket = async () => {
 
 	// Start watching for file changes
 	const watcher = chokidar.watch(path.resolve(process.cwd(), 'src'), {
-		persistent: true
+		persistent: true,
 	});
 
 	watcher.on('all', async (event, filePath) => {

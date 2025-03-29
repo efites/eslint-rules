@@ -9,6 +9,10 @@ const HORIZONTAL_SPACING = 270;
 const VERTICAL_SPACING = 80;
 
 export async function buildFileTree(rootPath, skipPaths = []) {
+	if (!fs.existsSync(rootPath)) {
+		throw new Error(`Неправильно указан путь: ${rootPath}`);
+	}
+
     const nodes = [];
     const edges = [];
     const levelPositions = {}; // Хранит последнюю использованную позицию для каждого уровня
@@ -52,8 +56,8 @@ export async function buildFileTree(rootPath, skipPaths = []) {
         try {
             stats = fs.statSync(currentPath);
         } catch (err) {
-            console.error(`Ошибка чтения ${currentPath}: ${err}`);
-            return;
+            console.error(`Ошибка чтения ${currentPath}: ${err}`)
+	        return
         }
 
         const type = stats.isDirectory() ? 'dir' : 'file';

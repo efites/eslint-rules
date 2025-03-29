@@ -35,9 +35,9 @@ const corsOptions = {
 
 // Init an app
 const app = express()
-export let config = []
+export let config = [{}]
 getConfig(config).then(conf => {
-	config = conf.default
+	config = conf
 })
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -48,6 +48,6 @@ app.use(cors(corsOptions))
 websocket()
 
 // Start
-app.listen(SERVER_PORT, () => {
+export const serverApp = app.listen(SERVER_PORT, () => {
 	console.log(`✔️\tOpen the inspector: \t${SERVER_URL}:${SERVER_PORT}/`);
 })
