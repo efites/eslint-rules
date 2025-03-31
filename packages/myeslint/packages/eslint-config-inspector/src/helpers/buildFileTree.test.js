@@ -1,3 +1,4 @@
+import {expect, test, describe} from 'vitest'
 import path from 'path'
 import {buildFileTree} from './buildFileTree.js'
 

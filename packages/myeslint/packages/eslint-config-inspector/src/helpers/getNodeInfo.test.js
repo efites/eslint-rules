@@ -1,3 +1,4 @@
+import {expect, test, describe} from 'vitest'
 import path from 'path'
 import {generateId} from './generateId.js'
 import {getNodeInfo} from './getNodeInfo.js'

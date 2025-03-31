@@ -1,3 +1,4 @@
+import {expect, test, describe} from 'vitest'
 import {getConfig} from './getConfig.js'
 import path from 'path'
 import fs from 'fs'
