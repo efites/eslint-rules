@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
 // Routes
-app.use(express.static(path.join(__dirname, 'app', 'dist')));
+app.use(express.static(path.join(__dirname, 'app', 'dist')))
 app.use('/', router)
 app.use(cors(getCorsOptions()))
 
@@ -28,17 +28,17 @@ app.use(cors(getCorsOptions()))
 const serverApp = app.listen(SERVER_PORT, () => {
 	websocket()
 
-	console.log(`✔️\tOpen the inspector: \t${SERVER_URL}:${SERVER_PORT}/`);
+	console.log(`✔️\tOpen the inspector: \t${SERVER_URL}:${SERVER_PORT}/`)
 })
 
 serverApp.on('error', (error) => {
 	if (error.code === 'EADDRINUSE') {
-		console.log(`Порт уже занят! Не буду поднимать сервер.`);
+		console.log(`Порт уже занят! Не буду поднимать сервер.`)
 
 		return
 	} else {
-		console.error('Какая-то другая ошибка при запуске сервера:', error);
+		console.error('Какая-то другая ошибка при запуске сервера:', error)
 
 		return
 	}
-});
+})

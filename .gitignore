@@ -6,6 +6,7 @@
 # Dist
 node_modules
 dist/
+coverage/
 
 # IDE
 .vscode/*
@@ -28,10 +29,6 @@ dist/
 .DS_Store
 *.local
 *.log*
-
-# Dist
-node_modules
-dist/
 
 # IDE
 .vscode/*

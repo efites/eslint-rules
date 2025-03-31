@@ -1,0 +1,44 @@
+{
+  "name": "eslint-config-inspector-bun",
+  "type": "module",
+  "main": "./src/index.js",
+  "version": "0.0.0",
+  "scripts": {
+    "build:app": "vite build --emptyOutDir",
+    "build:swc": "swc bin src index.ts -d dist/server --extensions .ts --copy-files --ignore **/*.test.*",
+    "build": "yarn build:app && yarn build:swc",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.4",
+    "@mui/material": "^6.4.4",
+    "@siberiacancode/reactuse": "^0.0.90",
+    "@xyflow/react": "^12.4.3",
+    "axios": "^1.7.9",
+    "es6-plato": "^1.2.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-file-icon": "^1.6.0",
+    "react-router-dom": "^7.1.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@types/react-file-icon": "^1.0.4",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "sass": "^1.85.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.22.0",
+    "vite": "^6.1.0",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
