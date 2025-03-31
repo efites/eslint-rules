@@ -1,6 +1,5 @@
 import {generateId} from './generateId.js'
 import path from 'path'
-import fs from 'fs'
 
 
 describe('Generate id', () => {
@@ -25,8 +24,6 @@ describe('Generate id', () => {
 		const filePath = path.resolve(process.cwd(), 'undefined')
 		const preId = 'd44e81cc-3e35-597f-8364-8414429a3a7e'
 		const genId = generateId(filePath)
-
-		console.log('generated ID:', genId)
 
 		expect(genId).toBe(preId)
 	})
