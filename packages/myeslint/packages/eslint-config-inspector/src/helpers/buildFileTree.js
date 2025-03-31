@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import {generateId} from './generateId.js'
 import {ESLint} from "eslint"
-import {config as ESLintConfig} from '../../index.js'
+import {getConfig} from "./getConfig.js"
 
 
 const HORIZONTAL_SPACING = 270;
@@ -10,12 +10,13 @@ const VERTICAL_SPACING = 80;
 
 export async function buildFileTree(rootPath, skipPaths = []) {
 	if (!fs.existsSync(rootPath)) {
-		throw new Error(`Неправильно указан путь: ${rootPath}`);
+		throw new Error(`Неправильно указан путь к файлу ${rootPath}`);
 	}
 
     const nodes = [];
     const edges = [];
     const levelPositions = {}; // Хранит последнюю использованную позицию для каждого уровня
+    const config = await getConfig()
 
     function countContents(dirPath) {
         let count = 0;
@@ -42,6 +43,7 @@ export async function buildFileTree(rootPath, skipPaths = []) {
         }
         const position = levelPositions[depth];
         levelPositions[depth] += VERTICAL_SPACING;
+
         return position;
     }
 
@@ -81,7 +83,7 @@ export async function buildFileTree(rootPath, skipPaths = []) {
         };
 
         if (type === 'file') {
-            const eslint = new ESLint({baseConfig: ESLintConfig})
+            const eslint = new ESLint({baseConfig: config})
             const analyzeResult = await eslint.lintFiles([currentPath])
 
             if (analyzeResult.length !== 0) {

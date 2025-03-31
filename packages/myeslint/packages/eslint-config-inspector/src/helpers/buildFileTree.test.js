@@ -1,10 +1,11 @@
+import path from 'path'
 import {buildFileTree} from './buildFileTree.js'
 
 
 describe('Build file tree', () => {
 
 	test('Has correct properties', async () => {
-		const projectRoot = 'D:\\Университет\\Диплом\\eslint-rules\\packages\\react'
+		const projectRoot = path.resolve(process.cwd(), '..', '..', '..', 'react')
 		const tree = await buildFileTree(projectRoot, ['node_modules'])
 
 		expect(tree).toHaveProperty('nodes')
@@ -13,6 +14,12 @@ describe('Build file tree', () => {
 
 	test('Not exists', async () => {
 		const projectRoot = 'undefined'
-		await expect(await buildFileTree(projectRoot, ['node_modules'])).toThrow()
+		expect.assertions(1)
+
+		try {
+			await buildFileTree(projectRoot, ['node_modules'])
+		} catch (error) {
+			expect(error.message).toMatch(/^Неправильно указан путь к файлу/)
+		}
 	});
 })

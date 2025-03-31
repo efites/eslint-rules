@@ -4,7 +4,7 @@ import {analyzeFile} from './analyzeFile.js'
 
 describe('Analyze a file', () => {
 	test('Has correct properties', async () => {
-		const testFilePath = path.join(process.cwd(), 'sum.js');
+		const testFilePath = path.join(process.cwd(), 'src', 'helpers', 'sum.js');
 		const result = await analyzeFile(testFilePath);
 
 		expect(result).toHaveProperty('errors');

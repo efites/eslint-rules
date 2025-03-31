@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import {v4} from 'uuid'
 import {ESLint} from 'eslint'
-import {config} from '../../index.js'
+import {getConfig} from './getConfig.js'
 
 
 export const analyzeFile = async (filePath) => {
@@ -11,6 +11,7 @@ export const analyzeFile = async (filePath) => {
 	}
 
 	const stat = fs.statSync(filePath)
+	const config = await getConfig()
 
 	if (stat.isDirectory()) {
 		const result = {
@@ -23,7 +24,7 @@ export const analyzeFile = async (filePath) => {
 		return result
 	}
 
-	const eslint = new ESLint({baseConfig: config ?? [{}]});
+	const eslint = new ESLint({baseConfig: config});
 
 	// Анализ файла с помощью ESLint
 	const results = await eslint.lintFiles([filePath]);

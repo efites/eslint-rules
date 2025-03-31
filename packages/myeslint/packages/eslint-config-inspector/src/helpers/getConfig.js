@@ -1,16 +1,24 @@
 import path from 'path'
-import fs from 'fs'
 
+
+let called = false
+let config = [{}]
 
 export const getConfig = async () => {
+	if (called) return config
+
 	const eslintFilePath = path.resolve(process.cwd(), './eslint.config.js')
-	//const eslintFileUrl = pathToFileURL(eslintFilePath).toString()
 
 	try {
-		const config = await import(eslintFilePath)
+		const configFile = await import(eslintFilePath)
+		config = configFile.default
+		called = true
 
-		return config.default
+		return config
 	} catch {
-		return [{}]
+		config = [{}]
+		called = true
+
+		return config
 	}
 }
