@@ -4,11 +4,11 @@
   "main": "./src/index.js",
   "version": "0.0.0",
   "scripts": {
+    "build": "yarn build:app && yarn build:swc",
     "build:app": "vite build --emptyOutDir",
     "build:swc": "swc bin src index.ts -d dist/server --extensions .ts --copy-files --ignore **/*.test.*",
-    "build": "yarn build:app && yarn build:swc",
     "dev": "nodemon --watch src --watch app -e js,ts,tsx,jsx,css,html --exec \"yarn dev:server\"",
-    "dev:server": "npx listhen -w --open ./src/index.ts",
+    "dev:server": "npx listhen -w ./src/index.ts",
     "dev:app": "vite",
     "test": "vitest"
   },
@@ -22,6 +22,7 @@
     "axios": "^1.7.9",
     "es6-plato": "^1.2.3",
     "h3": "^1.15.1",
+    "mrmime": "^2.0.1",
     "nodemon": "^3.1.9",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/bun": "latest",
+    "@types/node": "^22.13.14",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/react-file-icon": "^1.0.4",

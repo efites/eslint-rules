@@ -1,15 +1,28 @@
 #!/usr/bin/env node
-import {createApp, createRouter, defineEventHandler} from "h3"
+import path from 'node:path'
+import {readFile, stat} from 'node:fs/promises'
+import {lookup} from 'mrmime'
+import {createApp, defineEventHandler, serveStatic} from "h3"
 
 export const app = createApp()
 
-
-const router = createRouter()
-app.use(router)
-
-router.get(
-	"/",
+app.use(
 	defineEventHandler((event) => {
-		return {message: "⚡️ Tadaa!!"}
+		return serveStatic(event, {
+			getContents: (file) => readFile(path.join(__dirname, '..', 'dist', 'app', file)),
+			getMeta: async (file) => {
+				const stats = await stat(path.join(__dirname, '..', 'dist', 'app', file))
+
+				if (!stats || !stats.isFile()) {
+					return
+				}
+
+				return {
+					type: lookup(file),
+					size: stats.size,
+					mtime: stats.mtimeMs
+				}
+			}
+		})
 	}),
 )

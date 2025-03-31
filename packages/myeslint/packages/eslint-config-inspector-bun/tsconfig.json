@@ -12,7 +12,7 @@
 		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"types": [
-			"vite/client"
+			"node"
 		],
 		"allowImportingTsExtensions": true,
 		"strict": true,
