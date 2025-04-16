@@ -1,22 +1,30 @@
 #!/usr/bin/env node
 import path from 'node:path'
+import {config} from 'dotenv'
 import {createServer} from 'node:http'
 import {readFile, stat} from 'node:fs/promises'
 import {lookup} from 'mrmime'
-import {createApp, defineEventHandler, serveStatic, toNodeListener} from "h3"
+import {createApp, defineEventHandler, serveStatic, toNodeListener, createRouter} from "h3"
+import {router} from './routes/routes'
 
+
+// Env. variables
+config({path: path.resolve(__dirname, '../.env')})
 
 export const app = createApp()
-const port = import.meta.env.VITE_SERVER_PORT
-console.log("PORT = ", port)
-const server = createServer(toNodeListener(app))
+export const SERVER_URL = import.meta.env.VITE_SERVER_URL
+export const SERVER_PORT = import.meta.env.VITE_SERVER_PORT
 
+app.use(router)
 app.use(
 	defineEventHandler((event) => {
+		const staticPath = path.join(__dirname, '..', 'dist', 'app')
+		console.log(staticPath)
+
 		return serveStatic(event, {
-			getContents: (file) => readFile(path.join(__dirname, '..', 'dist', 'app', file)),
+			getContents: (file) => readFile(path.join(staticPath, file)),
 			getMeta: async (file) => {
-				const stats = await stat(path.join(__dirname, '..', 'dist', 'app', file))
+				const stats = await stat(path.join(staticPath, file))
 
 				if (!stats || !stats.isFile()) {
 					return
@@ -32,8 +40,12 @@ app.use(
 	}),
 )
 
-server.listen(port, async () => {
-	const url = `http://localhost:${port}`
+const server = createServer(toNodeListener(app))
+
+
+server.listen(SERVER_PORT, async () => {
+	const url = `http://localhost:${SERVER_PORT}`
 
 	console.log(`Starting eslint-config-bun at`, url, '\n')
 })
+
