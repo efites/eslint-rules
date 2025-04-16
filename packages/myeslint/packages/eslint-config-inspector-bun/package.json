@@ -1,7 +1,6 @@
 {
   "name": "eslint-config-inspector-bun",
-  "type": "module",
-  "main": "./src/index.js",
+  "type": "commonjs",
   "version": "0.0.0",
   "scripts": {
     "build": "yarn build:app && yarn build:swc",

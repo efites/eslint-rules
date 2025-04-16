@@ -7,6 +7,6 @@
 		"packages/*"
 	],
 	"bin": {
-		"x-lint": "packages/eslint-config-inspector/index.js"
+		"x-lint": "packages/eslint-config-inspector-bun/dist/server/src/index.js"
 	}
 }

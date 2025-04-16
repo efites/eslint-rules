@@ -1,0 +1,22 @@
+{
+	"$schema": "https://json.schemastore.org/swcrc",
+	"env": {
+		"targets": {
+			"node": "12.0"
+		}
+	},
+	"module": {
+		"type": "commonjs"
+	},
+	"jsc": {
+		"minify": {
+			"compress": {
+				"unused": true
+			},
+			"mangle": true
+		},
+		"parser": {
+			"syntax": "typescript"
+		}
+	}
+}
