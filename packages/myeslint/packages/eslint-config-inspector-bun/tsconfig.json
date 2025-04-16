@@ -22,7 +22,8 @@
 		"skipLibCheck": true
 	},
 	"include": [
-		"src"
+		"src",
+		"global-env.d.ts"
 	],
 	"exclude": [
 		"node_modules"
