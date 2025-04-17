@@ -1,1 +1,0 @@
-{"root":["./src/app.tsx","./src/index.tsx","./src/api/node.ts","./src/api/tree.ts","./src/components/dirnode/dirnode.tsx","./src/components/filenode/filenode.tsx","./src/pages/main.tsx","./src/pages/notfound.tsx"],"version":"5.7.3"}
