@@ -1,5 +1,6 @@
 export default [{
-	files: ["src/**/.js"],
+	files: ["src/**"],
 	rules: {
+		'no-unused-vars': "error"
 	}
 }]
