@@ -1,6 +1,7 @@
 import {eslint} from '@efites/eslint-config'
 
 
+console.log(eslint())
 
 export default eslint()
 
