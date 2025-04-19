@@ -6,7 +6,7 @@
 		"packages/*"
 	],
 	"scripts": {
-		"prepare": "cd ./packages/react && yarn && cd ../myeslint && yarn && cd ./packages/eslint-config-inspector-bun/app && yarn"
+		"prepare": "cd ./packages/react && yarn && cd ../myeslint && yarn && cd ./packages/eslint-config-inspector-bun/app && yarn && cd ../ && yarn build"
 	},
 	"devDependencies": {
 		"husky": "^9.1.6",
