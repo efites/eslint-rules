@@ -41,7 +41,8 @@ export const react = () => {
 
 			complexity: ["error", 3],
 			"react/react-in-jsx-scope": "off",
-			'no-unused-vars': 'warn'
+			"@typescript-eslint/no-unused-vars": "off",
+			'no-unused-vars': 'error'
 		}
 	}
 }

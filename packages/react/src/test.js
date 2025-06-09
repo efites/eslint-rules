@@ -11,6 +11,13 @@ const expression = function(a, b) {
 	return 'done'
 }
 
+function asd(userInput) {
+const query = `SELECT * FROM users WHERE id = ${userInput}`; // Ошибка!
+
+console.log(query)
+}
+asd(123)
+
 console.info('log', 5, {"key": [1, 2, 3]})
 
 expression()

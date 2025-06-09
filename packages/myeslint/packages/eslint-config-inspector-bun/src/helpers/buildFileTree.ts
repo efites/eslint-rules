@@ -94,6 +94,12 @@ export async function buildFileTree(rootPath: string, skipPaths: string[] = [], 
 
 				node.data.errors = errors.length
 				node.data.warnings = warnings.length
+
+				if (errors.length) {
+					const formatter = await eslint.loadFormatter('stylish') // 'stylish' - стандартный формат
+					const resultText = await formatter.format([fileResult])
+					console.log(resultText)
+				}
 			}
 		}
 		node

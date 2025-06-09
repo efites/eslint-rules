@@ -1,4 +1,4 @@
-import {react} from './configs/index.js'
+import {react, security} from './configs/index.js'
 
 
 const eslint = (config) => {
@@ -7,6 +7,7 @@ const eslint = (config) => {
 	const configs = []
 
 	configs.push(react())
+	configs.push(security())
 
 	return configs
 }
